@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+    - 80:80
+    volumes:
+    - /home/hjm/vueblog/nginx/html:/usr/share/nginx/html
+    - /home/hjm/vueblog/nginx/nginx.conf:/etc/nginx/nginx.conf
+    privileged: true
+
+  mysql:
+    image: mysql:5.7.27
+    ports:
+    - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+
+  redis:
+    image: redis:latest
+  vueblog:
+    image: vudblog:latest
+    build: .
+    ports:
+    - 8081:8081
+    depends_on:
+      - mysql
+      - redis
